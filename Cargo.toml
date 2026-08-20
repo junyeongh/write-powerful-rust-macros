@@ -1,6 +1,16 @@
-[package]
-name = "write-powerful-rust-macros"
+[workspace]
+resolver = "3"
+members = ["chapters/*"]
+
+[workspace.package]
 version = "0.1.0"
 edition = "2024"
 
-[dependencies]
+# Versions pinned once here; each chapter opts in with `<dep>.workspace = true`
+[workspace.dependencies]
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+syn = { version = "2", features = ["full", "extra-traits"] }
+quote = "1"
+proc-macro2 = "1"
+trybuild = "1"
