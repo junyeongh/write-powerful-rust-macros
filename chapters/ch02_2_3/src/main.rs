@@ -74,7 +74,7 @@ impl FirstName {
         }
     }
 }
-generate_get_value!(FirstName);
+// generate_get_value!(FirstName);
 
 impl NameRule<LastName> for LastName {
     fn new(name: &str) -> Result<LastName, String> {
@@ -91,7 +91,6 @@ impl NameRule<LastName> for LastName {
         &self.value
     }
 }
-// generate_get_value!(LastName);
 
 generate_new_instance!(Age, i32);
 generate_new_instance!(Pay, i32);
@@ -113,20 +112,55 @@ fn calculate_raise(first_name: FirstName, last_name: LastName, age: Age, current
     }
 }
 
+macro_rules! generate_from {
+    ($struct_type:ident) => {
+        generate_from!($struct_type, String);
+    };
+    ($struct_type:ident, $return_type:ty) => {
+        impl From<$struct_type> for $return_type {
+            fn from(f: $struct_type) -> Self {
+                f.value
+            }
+        }
+    };
+}
+generate_from!(Age, i32);
+
+macro_rules! generate_newtypes_methods {
+    ($struct_type:ident) => {
+        generate_get_value!($struct_type, String);
+        generate_from!($struct_type, String);
+    };
+    ($struct_type:ident, $return_type:ty) => {
+        generate_get_value!($struct_type, $return_type);
+        generate_from!($struct_type, $return_type);
+    };
+}
+generate_newtypes_methods!(FirstName);
+
 fn main() {
+    let first_raise_first_name = FirstName::new("Smith").unwrap();
+    let first_raise_last_name = LastName::new("Sam").unwrap();
+    let first_raise_age = Age::new(20);
+    // let first_raise_age = Age::from(20);
+    let first_raise_pay = Pay::new(1000);
     let first_raise = calculate_raise(
-        FirstName::new("Smith").unwrap(),
-        LastName::new("Sam").unwrap(),
-        Age::new(20),
-        Pay::new(1000),
+        first_raise_first_name,
+        first_raise_last_name,
+        first_raise_age,
+        first_raise_pay,
     );
     println!("{}", first_raise);
 
+    let second_raise_first_name = FirstName::new("Sam").unwrap();
+    let second_raise_last_name = LastName::new("Smith").unwrap();
+    let second_raise_age = Age::new(1000);
+    let second_raise_pay = Pay::new(20);
     let second_raise = calculate_raise(
-        FirstName::new("Sam").unwrap(),
-        LastName::new("Smith").unwrap(),
-        Age::new(1000),
-        Pay::new(20),
+        second_raise_first_name,
+        second_raise_last_name,
+        second_raise_age,
+        second_raise_pay,
     );
     println!("{}", second_raise);
 }

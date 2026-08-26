@@ -1,0 +1,6 @@
+[package]
+name = "ch02_3"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

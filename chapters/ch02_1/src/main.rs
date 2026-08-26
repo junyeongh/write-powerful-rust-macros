@@ -20,7 +20,11 @@ macro_rules! my_vec {
         }
     };
 
-    [$($x:expr),+] => (
+    //  [$($x:expr),+] => (
+    [
+        $($x:expr),+
+        $(,)?
+    ] => (
         {
             let mut v = Vec::new();
             $(
@@ -43,4 +47,10 @@ fn main() {
 
     let three_numbers: Vec<i32> = my_vec![1, 2, 3];
     println!("{:?}", three_numbers); // output: [1, 2, 3]
+
+    let one_number_with_trailing_comma: Vec<i32> = my_vec!(1,);
+    println!("{:?}", one_number_with_trailing_comma); // output: [1]
+
+    let three_numbers_with_trailing_comma: Vec<i32> = my_vec![1, 2, 3,];
+    println!("{:?}", three_numbers_with_trailing_comma); // output: [1, 2, 3]
 }
