@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["chapters/*"]
+members = ["chapters/*", "hello-world-macro"]
 
 [workspace.package]
 version = "0.1.0"
